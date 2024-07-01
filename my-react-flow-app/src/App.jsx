@@ -1,4 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback,useState } from 'react';
+import { applyEdgeChanges, applyNodeChanges } from 'reactflow';
+
+import TextUpdaterNode from './TextUpdaterNode.jsx';
+import './text-updater-node.css';
+
+const rfStyle = {
+  backgroundColor: '#B8CEFF',
+};
+
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -13,7 +22,14 @@ import 'reactflow/dist/style.css';
 const initialNodes = [
   { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
   { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+  { id: 'node-3', type: 'textUpdater', position: { x: 0, y: 200 }, data: { value: 123 } },
 ];
+
+// we define the nodeTypes outside of the component to prevent re-renderings
+// you could also use useMemo inside the component
+const nodeTypes = { textUpdater: TextUpdaterNode };
+
+
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
  
 export default function App() {
@@ -33,6 +49,8 @@ export default function App() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        style={rfStyle}
       >
         <Controls />
         <MiniMap />
